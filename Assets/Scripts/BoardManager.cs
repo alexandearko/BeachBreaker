@@ -35,6 +35,8 @@ public class BoardManager : MonoBehaviour
         float startX = this.transform.position.x;
         float startY = this.transform.position.y;
 
+        int idx = -1;
+
         for(int x = 0; x < xSize; x++)
         {
             for(int y = 0; y < ySize; y++)
@@ -42,9 +44,16 @@ public class BoardManager : MonoBehaviour
                 GameObject newCandy = Instantiate(currentCandy, new Vector3(startX + (offset.x*x), startY + (offset.y*y), 0), currentCandy.transform.rotation);
                 newCandy.name = string.Format("Candy[{0}] [{1}]" , x, y);
 
-                Sprite sprite = prefabs[Random.Range(0, prefabs.Count)];
+                do
+                {
+                    idx = Random.Range(0, prefabs.Count);      
+                }
+                while((x>0 && idx == candies[x-1,y].GetComponent<Candy>().id) || (y>0 && idx == candies[x,y-1].GetComponent<Candy>().id));
+
+                Sprite sprite = prefabs[idx];
                 newCandy.GetComponent<SpriteRenderer>().sprite = sprite;
-                newCandy.GetComponent<Candy>().id = -1;
+                newCandy.GetComponent<Candy>().id = idx;
+                newCandy.transform.parent = this.transform;
                 candies[x, y] = newCandy;
             }
         }
