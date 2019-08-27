@@ -21,6 +21,7 @@ public class Candy : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        objetive = Vector3.zero;
     }
 
     private void SelectCandy()
@@ -60,8 +61,7 @@ public class Candy : MonoBehaviour
                 previousSelected.DeselectCandy();
                 FindAllMatches();
 
-                StopCoroutine(BoardManager.sharedInstance.FindNullCandies());
-                StartCoroutine(BoardManager.sharedInstance.FindNullCandies());
+                GUIManager.sharedInstance.MoveCounter--;
                 }
                 else
                 {
@@ -164,6 +164,8 @@ public class Candy : MonoBehaviour
         if (hMatch || vMatch)
         {
             spriteRenderer.sprite = null;
+            StopCoroutine(BoardManager.sharedInstance.FindNullCandies());
+            StartCoroutine(BoardManager.sharedInstance.FindNullCandies());
         }
     }   
 }   
